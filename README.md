@@ -36,7 +36,7 @@ To set up the Coffee Run application, follow these steps:
 To run the application, use the following command in the terminal:
 
 ```bash
-node index.js
+npm run dev
 ```
 
 Follow the on-screen prompts to manage coffee orders and track who should pay next.
@@ -50,8 +50,6 @@ Follow the on-screen prompts to manage coffee orders and track who should pay ne
 ## Authors
 
 - **Mark Brooks** - *Initial work* - [YourGitHub](https://github.com/brooksmarka)
-
-See also the list of [contributors](https://github.com/brooksmarka/coffee-run/contributors) who participated in this project.
 
 ## License
 
