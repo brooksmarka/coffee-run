@@ -3,28 +3,28 @@
     "Bob": {
       "drink": "cappuccino",
       "price": 5,
-      "totalPaid": 4
+      "totalPaid": 35
     },
     "Jeremy": {
       "drink": "black coffee",
       "price": 2.5,
-      "totalPaid": 22
+      "totalPaid": 37.5
     },
     "John": {
       "drink": "ice tea",
       "price": 2,
-      "totalPaid": 0
+      "totalPaid": 48.5
     },
     "Lauren": {
-      "drink": "Oat Milk Latte",
-      "price": 6,
-      "totalPaid": 3
+      "drink": "Soda",
+      "price": 4,
+      "totalPaid": 48.5
     },
     "Sam": {
-      "drink": "orange juice",
+      "drink": "Orange Juice",
       "price": 2,
-      "totalPaid": 5
+      "totalPaid": 36
     }
   },
-  "nextPayer": "John"
+  "nextPayer": "Bob"
 }
