@@ -1,6 +1,6 @@
-const readlineSync = require('readline-sync');
-const fs = require('fs');
-const chalk = require('chalk')
+import fs from 'fs';
+import readlineSync from 'readline-sync'
+import chalk from 'chalk';
 
 const dataFile = 'coffeeData.json';
 
