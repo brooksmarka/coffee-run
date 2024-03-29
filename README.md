@@ -47,6 +47,9 @@ Follow the on-screen prompts to manage coffee orders and track who should pay ne
 - **Calculate Total Cost**: Automatically calculates the total cost for the current coffee run.
 - **Determine Next Payer**: Keeps track of expenses and updates who should be paying for the next coffee run.
 
+## Assumptions
+- All five coworkers order their favorite beverage everyday without skipping a day.
+
 ## Authors
 
 - **Mark Brooks** - *Initial work* - [YourGitHub](https://github.com/brooksmarka)
