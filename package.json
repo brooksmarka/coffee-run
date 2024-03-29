@@ -5,7 +5,7 @@
   "main": "dist/src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "clean": "rm -rf ./dist",
     "dev": "npm run clean && tsc --sourceMap && node dist/src/index.js",
     "build": "npm run clean && tsc"
@@ -21,8 +21,11 @@
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.30",
     "@types/readline-sync": "^1.4.8",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
     "typescript": "^5.4.3"
   }
 }

@@ -4,8 +4,8 @@ import chalk from 'chalk';
 import { CoffeeData } from '../types/types.js'
 
 export class CoffeeRunManager {
-    private coffeeData: CoffeeData;
-    private dataFilePath: string;
+    public coffeeData: CoffeeData;
+    public dataFilePath: string;
 
     constructor(dataFile: string) {
         this.dataFilePath = dataFile;
@@ -21,7 +21,7 @@ export class CoffeeRunManager {
      * @param {string} dataFile - The path to the json file containing the coffee data.
      * @returns {CoffeeData} The parsed coffee data from the file or a default object if an error occurs.
     */
-    private fetchCoffeeData(dataFile: string): CoffeeData{
+    public fetchCoffeeData(dataFile: string): CoffeeData{
         try {
             const rawData = fs.readFileSync(dataFile, 'utf8');
             return JSON.parse(rawData);
@@ -42,7 +42,7 @@ export class CoffeeRunManager {
      * 
      * @returns {CoffeeData} The updated coffee data after handling any changes, or the current data if no updates are made.
     */
-    private handleCoffeeDataUpdates(){
+    public handleCoffeeDataUpdates(){
         let response = '';
         do {
             response = readlineSync.question(chalk.yellow(`\nWould you like to change it? (y/n): `));
@@ -67,7 +67,7 @@ export class CoffeeRunManager {
      * @param data The CoffeeData object containing the current state of coworkers' coffee orders.
      * @returns The updated CoffeeData object after making the requested changes to the orders.
     */
-    private getCoffeeOrders(data: CoffeeData): CoffeeData{
+    public getCoffeeOrders(data: CoffeeData): CoffeeData{
         let isUpdating = 'y';
     
         while (isUpdating === 'y') {
@@ -102,7 +102,7 @@ export class CoffeeRunManager {
      * 
      * @returns {number} The total cost of the coffee orders for the current run.
      */
-    private costOfCoffeeRun() : number{
+    public costOfCoffeeRun() : number{
         let totalCost = 0;
     
         for (let coworkerKey in this.coffeeData.coworkers) {
@@ -119,7 +119,7 @@ export class CoffeeRunManager {
      * @param data - The data structure containing coworkers' coffee orders.
      * @returns void 
     */
-    private displayOrders(data: CoffeeData): void{
+    public displayOrders(data: CoffeeData): void{
         console.log(chalk.green.bold.underline(`Hello! ${data.nextPayer} is up to pay! Here are the Current coffee orders:\n`));
         for (const coworkerKey in data.coworkers) {
             console.log(chalk.magentaBright(`${coworkerKey}: ${data.coworkers[coworkerKey].drink} at ${data.coworkers[coworkerKey].price}`));
@@ -132,7 +132,7 @@ export class CoffeeRunManager {
      * @param personToPay - The name of the coworker who is paying for this coffee run.
      * @returns void
     */
-    private coffeeRun ( totalCost: number, personToPay: string): void{
+    public coffeeRun ( totalCost: number, personToPay: string): void{
 
         for(const coworkerKey in this.coffeeData.coworkers){
             
@@ -155,7 +155,7 @@ export class CoffeeRunManager {
      * If no next payer can be determined (e.g., in an empty dataset), an informative message is logged.
      * @returns void
     */
-    private updateNextPayer(): void {
+    public updateNextPayer(): void {
         let minPaid = null;
         let nextPayer = null;
     
@@ -183,7 +183,7 @@ export class CoffeeRunManager {
      * 
      * Note: The method assumes that `dataFile` is a valid file path and that the application has write permissions.
      */
-    private writeToFile() {
+    public writeToFile() {
 
         fs.writeFileSync(this.dataFilePath, JSON.stringify(this.coffeeData, null, 2), 'utf8');
     }

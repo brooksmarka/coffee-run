@@ -3,12 +3,12 @@
     "Bob": {
       "drink": "cappuccino",
       "price": 5,
-      "totalPaid": 35
+      "totalPaid": 50.5
     },
     "Jeremy": {
       "drink": "black coffee",
       "price": 2.5,
-      "totalPaid": 37.5
+      "totalPaid": 57.5
     },
     "John": {
       "drink": "ice tea",
@@ -17,14 +17,14 @@
     },
     "Lauren": {
       "drink": "Soda",
-      "price": 4,
+      "price": 5,
       "totalPaid": 48.5
     },
     "Sam": {
       "drink": "Orange Juice",
       "price": 2,
-      "totalPaid": 36
+      "totalPaid": 72.5
     }
   },
-  "nextPayer": "Bob"
+  "nextPayer": "Dave"
 }
