@@ -9,9 +9,7 @@ export class CoffeeRunManager {
 
     constructor(dataFile: string) {
         this.dataFilePath = dataFile;
-        this.coffeeData = this.fetchCoffeeData(dataFile);
-        this.displayOrders(this.coffeeData);
-        this.handleCoffeeDataUpdates();
+        this.coffeeData = this.coffeeData = { coworkers: {}, nextPayer: '' };
     }
 
     /**
@@ -47,9 +45,9 @@ export class CoffeeRunManager {
     private handleCoffeeDataUpdates(){
         let response = '';
         do {
-            response = readlineSync.question(chalk.yellow('Would you like to change it? y/n: '));
+            response = readlineSync.question(chalk.yellow(`\nWould you like to change it? (y/n): `));
             if (response !== 'y' && response !== 'n') {
-                console.log(chalk.red("Invalid input. Please only press 'y' or 'n'."));
+                console.log(chalk.red(`\nInvalid input. Please only press 'y' or 'n'.`));
             }
         } while (response !== 'y' && response !== 'n');
     
@@ -111,7 +109,7 @@ export class CoffeeRunManager {
             let price = this.coffeeData.coworkers[coworkerKey].price;
             totalCost += price;
         }
-        console.log(chalk.red(`the totalCost for this coffee run was: ${totalCost}`))
+        console.log(chalk.magenta(`the total cost for this coffee run was: ${totalCost}\n`))
         return totalCost;
     
     }
@@ -122,9 +120,9 @@ export class CoffeeRunManager {
      * @returns void 
     */
     private displayOrders(data: CoffeeData): void{
-        console.log(chalk.green(`Hello! ${data.nextPayer} is up to pay! Here are the Current coffee orders:`));
+        console.log(chalk.green.bold.underline(`Hello! ${data.nextPayer} is up to pay! Here are the Current coffee orders:\n`));
         for (const coworkerKey in data.coworkers) {
-            console.log(chalk.blue(`${coworkerKey}: ${data.coworkers[coworkerKey].drink} at ${data.coworkers[coworkerKey].price}`));
+            console.log(chalk.magentaBright(`${coworkerKey}: ${data.coworkers[coworkerKey].drink} at ${data.coworkers[coworkerKey].price}`));
         }
     }
 
@@ -142,7 +140,7 @@ export class CoffeeRunManager {
 
             if(coworkerKey === personToPay){
                 this.coffeeData.coworkers[coworkerKey].totalPaid = totalPaid + totalCost;
-                console.log(chalk.blue(`Coworker ${coworkerKey} just had to pay ${totalCost}`))
+                console.log(chalk.whiteBright.underline(`Coworker ${coworkerKey} just had to pay ${totalCost}\n`))
             }
         
         }
@@ -171,7 +169,7 @@ export class CoffeeRunManager {
     
         if(nextPayer !== null){
             //this is the person to pay
-            console.log(chalk.green(`the next person to pay should be: ${nextPayer}`))
+            console.log(chalk.green(`the next person to pay should be: ${nextPayer}\n`))
             this.coffeeData.nextPayer = nextPayer;
         }else{
             console.log("We could not determine the next payer")
@@ -199,6 +197,12 @@ export class CoffeeRunManager {
      * This method acts as the primary entry point for the coffee run workflow.
      */
     public startCoffeeRun(){
+        //setup for the coffee run
+        this.coffeeData = this.fetchCoffeeData(this.dataFilePath);
+        this.displayOrders(this.coffeeData);
+        this.handleCoffeeDataUpdates();
+
+        //We are now ready to perform the coffee run
         this.coffeeRun(this.costOfCoffeeRun(), this.coffeeData.nextPayer);
         this.updateNextPayer();
         this.writeToFile();
