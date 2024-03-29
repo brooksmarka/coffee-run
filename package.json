@@ -1,11 +1,14 @@
 {
-  "name": "beltram-challenge",
+  "name": "coffee-run",
   "version": "1.0.0",
   "description": "Calculate who should pay for coffee next",
-  "main": "index.js",
+  "main": "dist/src/index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node index.js"
+    "clean": "rm -rf ./dist",
+    "dev": "npm run clean && tsc --sourceMap && node dist/src/index.js",
+    "build": "npm run clean && tsc"
   },
   "author": "Mark Brooks",
   "license": "ISC",
@@ -16,5 +19,10 @@
     "chalk": "^4.1.2",
     "fs": "^0.0.1-security",
     "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/readline-sync": "^1.4.8",
+    "typescript": "^5.4.3"
   }
 }
