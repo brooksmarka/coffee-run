@@ -50,6 +50,19 @@ Follow the on-screen prompts to manage coffee orders and track who should pay ne
 ## Assumptions
 - All five coworkers order their favorite beverage everyday without skipping a day.
 
+## Tests
+
+To ensure the Coffee Run application functions as expected, a suite of automated tests has been written. These tests cover the various functionalities of the application, including managing coffee orders, calculating costs, and determining the next payer.
+
+### Running Tests
+
+You can run the tests using the following command:
+
+```bash
+npm test
+```
+This command will execute all the tests and provide a report on their outcomes. The test suite will also automatically run via a github action when a pull request is created so ensure the tests pass before merging to the main branch.
+
 ## Authors
 
 - **Mark Brooks** - *Initial work* - [YourGitHub](https://github.com/brooksmarka)
