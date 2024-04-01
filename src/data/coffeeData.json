@@ -8,12 +8,12 @@
     "Jeremy": {
       "drink": "black coffee",
       "price": 2.5,
-      "totalPaid": 10
+      "totalPaid": 27.5
     },
     "John": {
       "drink": "ice tea",
       "price": 2,
-      "totalPaid": 0
+      "totalPaid": 17.5
     },
     "Lauren": {
       "drink": "Soda",
@@ -22,9 +22,9 @@
     },
     "Sam": {
       "drink": "Orange Juice",
-      "price": 2,
+      "price": 3,
       "totalPaid": 35
     }
   },
-  "nextPayer": "John"
+  "nextPayer": "Bob"
 }

@@ -8,7 +8,7 @@
     "test": "jest",
     "clean": "rm -rf ./dist",
     "dev": "npm run clean && tsc --sourceMap && node dist/src/index.js",
-    "build": "npm run clean && tsc"
+    "build": "tsc"
   },
   "author": "Mark Brooks",
   "license": "ISC",

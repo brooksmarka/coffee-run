@@ -12,7 +12,7 @@ Before running the Coffee Run application, ensure you have [Node.js](https://nod
 
 ### Installing
 
-To set up the Coffee Run application, follow these steps:
+To set up the Coffee Run application you can utilize Node, or Docker.
 
 1. **Clone the repository** (or download the source code):
 
@@ -27,6 +27,10 @@ To set up the Coffee Run application, follow these steps:
     npm install
     ```
 
+OR
+
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/) (usually installed with Docker)
 3. **Edit Seed Data** (Optional):
 
     The `coffeeData.json` file contains seed data for coworkers and their coffee orders. You can modify this file as needed to reflect your team's information.
@@ -35,8 +39,18 @@ To set up the Coffee Run application, follow these steps:
 
 To run the application, use the following command in the terminal:
 
+For running with npm.
 ```bash
 npm run dev
+```
+
+For installing and running with Docker:
+```bash
+docker compose build
+```
+
+```bash
+docker compose run -it coffee-run
 ```
 
 Follow the on-screen prompts to manage coffee orders and track who should pay next.
@@ -61,11 +75,11 @@ You can run the tests using the following command:
 ```bash
 npm test
 ```
-This command will execute all the tests and provide a report on their outcomes. The test suite will also automatically run via a github action when a pull request is created so ensure the tests pass before merging to the main branch.
+This command will execute all the tests and provide a report on their outcomes. The test suite will also automatically run via a github action when a pull request is created to ensure the tests pass before merging to the main branch.
 
 ## Authors
 
-- **Mark Brooks** - *Initial work* - [YourGitHub](https://github.com/brooksmarka)
+- **Mark Brooks** - [YourGitHub](https://github.com/brooksmarka)
 
 ## License
 
