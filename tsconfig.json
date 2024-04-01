@@ -5,6 +5,7 @@
         "target": "es2022",
         "sourceMap": true,
         "outDir": "dist",
+        "esModuleInterop": true,
         /* Linting */
         "strict": true,
         "noUnusedLocals": true,

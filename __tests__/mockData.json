@@ -1,0 +1,15 @@
+{
+    "coworkers": {
+      "Bob": {
+        "drink": "cappuccino",
+        "price": 5,
+        "totalPaid": 35
+      },
+      "Alice": {
+        "drink": "Orange Juice",
+        "price": 2,
+        "totalPaid": 36
+      }
+    },
+    "nextPayer": "Bob"
+}
