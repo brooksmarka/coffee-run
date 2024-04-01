@@ -21,7 +21,7 @@ export class CoffeeRunManager {
      * @param {string} dataFile - The path to the json file containing the coffee data.
      * @returns {CoffeeData} The parsed coffee data from the file or a default object if an error occurs.
     */
-    public fetchCoffeeData(dataFile: string): CoffeeData{
+    public fetchCoffeeData(dataFile: string): CoffeeData {
         try {
             const rawData = fs.readFileSync(dataFile, 'utf8');
             return JSON.parse(rawData);
@@ -122,7 +122,7 @@ export class CoffeeRunManager {
     public displayOrders(data: CoffeeData): void{
         console.log(chalk.green.bold.underline(`Hello! ${data.nextPayer} is up to pay! Here are the Current coffee orders:\n`));
         for (const coworkerKey in data.coworkers) {
-            console.log(chalk.magentaBright(`${coworkerKey}: ${data.coworkers[coworkerKey].drink} at ${data.coworkers[coworkerKey].price}`));
+            console.log(chalk.magentaBright(`${coworkerKey}: ${data.coworkers[coworkerKey].drink} at $${data.coworkers[coworkerKey].price}`));
         }
     }
 

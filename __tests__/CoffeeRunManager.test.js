@@ -1,4 +1,4 @@
-jest.mock('fs')
+jest.mock('fs');
 
 const fs = require('fs');
 const readlineSync = require('readline-sync');
@@ -8,20 +8,34 @@ const { CoffeeRunManager } = require("../src/CoffeeRunManager");
 jest.mock('../src/CoffeeRunManager');
 jest.mock('readline-sync');
 
+const mockFilePath = './mockData.json';
+let coffeeRunManager;
+const mockPaymentData = {
+  coworkers: {
+    "Alice": { totalPaid: 10 },
+    "Bob": { totalPaid: 20 },
+    "Charlie": { totalPaid: 30 }
+  },
+  nextPayer: 'Alice'
+};
+
+const mockOrderData = {
+  coworkers: {
+    "Alice": { drink: "Latte", price: 3.5 },
+    "Bob": { drink: "Espresso", price: 2.0 }
+  },
+  nextPayer: 'Alice'
+};
+
 describe('writeToFile', () => {
-  let coffeeRunManager;
-  const mockFilePath = './mockData.json';
-  const mockData = {
-    coworkers: {
-      "Alice": { totalPaid: 10 },
-      "Bob": { totalPaid: 20 }
-    },
-    nextPayer: 'Alice'
-  };
 
   beforeEach(() => {
     coffeeRunManager = new CoffeeRunManager(mockFilePath);
-    coffeeRunManager.coffeeData = mockData;
+    coffeeRunManager.coffeeData = mockPaymentData;
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   it('should write the correct data to the file', () => {
@@ -30,26 +44,21 @@ describe('writeToFile', () => {
     // Verify that fs.writeFileSync is called correctly
     expect(fs.writeFileSync).toHaveBeenCalledWith(
       mockFilePath,
-      JSON.stringify(mockData, null, 2),
+      JSON.stringify(mockPaymentData, null, 2),
       'utf8'
     );
   });
 });
 
 describe('costOfCoffeeRun', () => {
-  let coffeeRunManager;
 
   beforeEach(() => {
-    let mockData = {
-      coworkers: { 
-        "Alice": { drink: "Latte", price: 3.5 },
-        "Bob": { drink: "Espresso", price: 2.0 }
-      },
-      nextPayer: 'Alice'
-    };
+    coffeeRunManager = new CoffeeRunManager(mockFilePath);
+    coffeeRunManager.coffeeData = mockOrderData; // Set the mock data
+  });
 
-    coffeeRunManager = new CoffeeRunManager('./mockData.json');
-    coffeeRunManager.coffeeData = mockData; // Set the mock data
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   it('should calculate the total cost correctly', () => {
@@ -60,21 +69,18 @@ describe('costOfCoffeeRun', () => {
 });
 
 describe('updateNextPayer', () => {
-  let coffeeRunManager;
-
   beforeEach(() => {
-    coffeeRunManager = new CoffeeRunManager('./mockData.json');
+    coffeeRunManager = new CoffeeRunManager(mockFilePath);
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   it('should update next payer correctly when one coworker has paid the least', () => {
-    coffeeRunManager.coffeeData = {
-      coworkers: {
-        "Alice": { totalPaid: 10 },
-        "Bob": { totalPaid: 15 },
-        "Charlie": { totalPaid: 20 }
-      },
-      nextPayer: ''
-    };
+    coffeeRunManager.coffeeData = mockPaymentData;
+
+    mockPaymentData.nextPayer = '';
 
     coffeeRunManager.updateNextPayer();
     expect(coffeeRunManager.coffeeData.nextPayer).toBe('Alice');
@@ -83,21 +89,16 @@ describe('updateNextPayer', () => {
 });
 
 describe('coffeeRun', () => {
-  let coffeeRunManager;
-
   beforeEach(() => {
-    coffeeRunManager = new CoffeeRunManager('./mockData.json');
+    coffeeRunManager = new CoffeeRunManager(mockFilePath);
   });
 
+  afterEach(() => {
+    jest.resetAllMocks();
+  })
+
   it('should correctly update the total paid amount for the person paying', () => {
-    coffeeRunManager.coffeeData = {
-      coworkers: {
-        "Alice": { totalPaid: 10 },
-        "Bob": { totalPaid: 20 },
-        "Charlie": { totalPaid: 30 }
-      },
-      nextPayer: ''
-    };
+    coffeeRunManager.coffeeData = mockPaymentData;
 
     const totalCost = 15;
     const personToPay = 'Bob';
@@ -110,46 +111,35 @@ describe('coffeeRun', () => {
 });
 
 describe('displayOrders', () => {
-  let coffeeRunManager;
-  let mockData;
 
   beforeEach(() => {
     coffeeRunManager = new CoffeeRunManager();
-    mockData = {
-      coworkers: {
-        "Alice": { drink: "Latte", price: 3.5 },
-        "Bob": { drink: "Espresso", price: 2.0 }
-      },
-      nextPayer: 'Alice'
-    };
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   it('should correctly display the coffee orders', () => {
     // Mock console.log
     console.log = jest.fn();
 
-    coffeeRunManager.displayOrders(mockData);
+    coffeeRunManager.displayOrders(mockOrderData);
 
     // Check if console.log was called with the correct arguments
-    expect(console.log).toHaveBeenCalledWith(chalk.green.bold.underline(`Hello! ${mockData.nextPayer} is up to pay! Here are the Current coffee orders:\n`));
-    expect(console.log).toHaveBeenCalledWith(chalk.magentaBright(`Alice: ${mockData.coworkers.Alice.drink} at ${mockData.coworkers.Alice.price}`));
-    expect(console.log).toHaveBeenCalledWith(chalk.magentaBright(`Bob: ${mockData.coworkers.Bob.drink} at ${mockData.coworkers.Bob.price}`));
+    expect(console.log).toHaveBeenCalledWith(chalk.green.bold.underline(`Hello! ${mockOrderData.nextPayer} is up to pay! Here are the Current coffee orders:\n`));
+    expect(console.log).toHaveBeenCalledWith(chalk.magentaBright(`Alice: ${mockOrderData.coworkers.Alice.drink} at $${mockOrderData.coworkers.Alice.price}`));
+    expect(console.log).toHaveBeenCalledWith(chalk.magentaBright(`Bob: ${mockOrderData.coworkers.Bob.drink} at $${mockOrderData.coworkers.Bob.price}`));
   });
 });
 
 describe('getCoffeeOrders', () => {
-  let coffeeRunManager;
-  let mockData;
-
   beforeEach(() => {
     coffeeRunManager = new CoffeeRunManager();
-    mockData = {
-      coworkers: {
-        "Alice": { drink: "Latte", price: 3.5 },
-        "Bob": { drink: "Espresso", price: 2.0 }
-      },
-      nextPayer: 'Alice'
-    };
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   it('should correctly update coffee orders based on user input', () => {
@@ -160,7 +150,7 @@ describe('getCoffeeOrders', () => {
       .mockReturnValueOnce('4.0')        // New price
       .mockReturnValueOnce('n');         // Update another order? No
 
-    const updatedData = coffeeRunManager.getCoffeeOrders(mockData);
+    const updatedData = coffeeRunManager.getCoffeeOrders(mockOrderData);
 
     // Assertions to check if the data was updated correctly
     expect(updatedData.coworkers['Alice'].drink).toBe('Cappuccino');
@@ -169,32 +159,26 @@ describe('getCoffeeOrders', () => {
 });
 
 describe('handleCoffeeDataUpdates', () => {
-  let coffeeRunManager;
-  let mockData;
-
   beforeEach(() => {
     coffeeRunManager = new CoffeeRunManager();
-    mockData = {
-      coworkers: {
-        "Alice": { drink: "Latte", price: 3.5 },
-        "Bob": { drink: "Espresso", price: 2.0 }
-      },
-      nextPayer: 'Alice'
-    };
-    coffeeRunManager.coffeeData = mockData;
+    coffeeRunManager.coffeeData = mockOrderData;
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   it('returns unchanged data on input "n"', () => {
     readlineSync.question.mockImplementationOnce(() => 'n');
     const result = coffeeRunManager.handleCoffeeDataUpdates();
-    expect(result).toBe(mockData);
+    expect(result).toBe(mockOrderData);
   });
 
   it('calls getCoffeeOrders on input "y"', () => {
     readlineSync.question.mockImplementationOnce(() => 'y');
     coffeeRunManager.getCoffeeOrders = jest.fn().mockImplementation(() => 'updated data');
     const result = coffeeRunManager.handleCoffeeDataUpdates();
-    expect(coffeeRunManager.getCoffeeOrders).toHaveBeenCalledWith(mockData);
+    expect(coffeeRunManager.getCoffeeOrders).toHaveBeenCalledWith(mockOrderData);
     expect(result).toBe('updated data');
   });
 
@@ -205,25 +189,26 @@ describe('handleCoffeeDataUpdates', () => {
     console.log = jest.fn(); // Mock console.log to verify the warning message
     const result = coffeeRunManager.handleCoffeeDataUpdates();
     expect(console.log).toHaveBeenCalledWith(chalk.red(`\nInvalid input. Please only press 'y' or 'n'.`));
-    expect(result).toBe(mockData);
+    expect(result).toBe(mockOrderData);
   });
 
 });
 
 describe('fetchCoffeeData', () => {
-  let coffeeRunManager;
-  const mockFilePath = './mockData.json';
 
   beforeEach(() => {
     coffeeRunManager = new CoffeeRunManager();
   });
 
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   it('should return parsed data from the file', () => {
-    const mockData = { coworkers: {"Alice": { drink: "Latte", price: 3.5 }}, nextPayer: 'Alice' };
-    fs.readFileSync.mockImplementation(() => JSON.stringify(mockData));
+    fs.readFileSync.mockImplementation(() => JSON.stringify(mockOrderData));
 
     const result = coffeeRunManager.fetchCoffeeData(mockFilePath);
-    expect(result).toEqual(mockData);
+    expect(result).toEqual(mockOrderData);
   });
 
   it('should return default data on error', () => {
@@ -235,12 +220,5 @@ describe('fetchCoffeeData', () => {
     expect(console.log).toHaveBeenCalledWith(`error fetching coffee data from file ${mockFilePath}`, expect.any(Error));
   });
 });
-
-
-it("it should mock coffeerunmanager", () => {
-  const costOfCoffeeRunMock = jest.fn();
-  jest.spyOn(CoffeeRunManager.prototype, "costOfCoffeeRun").mockImplementation(costOfCoffeeRunMock);
-});
-
 
 
