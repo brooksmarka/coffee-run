@@ -8,12 +8,15 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Before running the Coffee Run application, ensure you have [Node.js](https://nodejs.org/en/) installed on your system. This application was developed with Node.js version 18.19.1
+Before running the Coffee Run application, ensure you have [Node.js](https://nodejs.org/en/) (version 18.19.1) or [Docker](https://www.docker.com/get-started) installed on your computer.
 
 ### Installing
 
-To set up the Coffee Run application you can utilize Node, or Docker.
+Edit Seed Data (Optional):
 
+The src/data/coffeeData.json file contains seed data for coworkers and their coffee orders. You can add more teammates or modify the name, coffee and amount in this file as needed to reflect your team's information.
+
+Option 1: Using Node
 1. **Clone the repository** (or download the source code):
 
     ```bash
@@ -27,13 +30,16 @@ To set up the Coffee Run application you can utilize Node, or Docker.
     npm install
     ```
 
-OR
+Option 2: Using Docker
+1. **Clone the repository** (or download the source code):
 
-- [Docker](https://www.docker.com/get-started)
-- [Docker Compose](https://docs.docker.com/compose/install/) (usually installed with Docker)
-3. **Edit Seed Data** (Optional):
+    ```bash
+    git clone https://github.com/your-username/coffee-run.git
+    cd coffee-run
+    ```
 
-    The `coffeeData.json` file contains seed data for coworkers and their coffee orders. You can modify this file as needed to reflect your team's information.
+2. **Download Docker**
+* [Docker](https://www.docker.com/get-started) - Make sure Docker Compose is included
 
 ### Usage
 
@@ -47,7 +53,7 @@ npm run dev
 For installing and running with Docker:
 
 ```bash
-docker compose run service
+docker compose run coffee
 ```
 
 Follow the on-screen prompts to manage coffee orders and track who should pay next.
@@ -67,7 +73,7 @@ To ensure the Coffee Run application functions as expected, a suite of automated
 
 ### Running Tests
 
-You can run the tests using the following command:
+If you are using Docker the tests run automatically before the application is built.  If you are using npm you can run the tests using the following command:
 
 ```bash
 npm test
