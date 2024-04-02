@@ -120,6 +120,7 @@ export class CoffeeRunManager {
             const totalPaid = this.coffeeData.coworkers[coworkerKey].totalPaid;
 
             if(coworkerKey === this.coffeeData.nextPayer){
+
                 const payersOrder = this.coffeeData.coworkers[coworkerKey].price;
                 this.coffeeData.coworkers[coworkerKey].totalPaid = totalPaid + totalCost - payersOrder;
                 console.log(chalk.whiteBright.underline(`Coworker ${coworkerKey} just had to pay ${totalCost}\n`))
