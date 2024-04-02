@@ -197,15 +197,28 @@ export class CoffeeRunManager {
      * This method acts as the primary entry point for the coffee run workflow.
      */
     public startCoffeeRun(){
-        //setup for the coffee run
-        this.coffeeData = this.fetchCoffeeData(this.dataFilePath);
-        this.displayOrders(this.coffeeData);
-        this.handleCoffeeDataUpdates();
+        let keepRunning = true;
 
-        //We are now ready to perform the coffee run
-        this.coffeeRun(this.costOfCoffeeRun(), this.coffeeData.nextPayer);
-        this.updateNextPayer();
-        this.writeToFile();
+        while(keepRunning){
+            //setup for the coffee run
+            this.coffeeData = this.fetchCoffeeData(this.dataFilePath);
+            this.displayOrders(this.coffeeData);
+            this.handleCoffeeDataUpdates();
+
+            //We are now ready to perform the coffee run
+            this.coffeeRun(this.costOfCoffeeRun(), this.coffeeData.nextPayer);
+            this.updateNextPayer();
+            this.writeToFile();
+
+            // Ask if they want to start another coffee run
+            const response = readlineSync.question(chalk.yellow('Start another coffee run? (y/n): '));
+            if (response.toLowerCase() !== 'y') {
+                console.log(chalk.green('Thank you for using Coffee Run Manager!'));
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

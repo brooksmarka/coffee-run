@@ -1,0 +1,30 @@
+{
+  "coworkers": {
+    "Bob": {
+      "drink": "cappuccino",
+      "price": 5,
+      "totalPaid": 80.5
+    },
+    "Jeremy": {
+      "drink": "Black Coffee",
+      "price": 5,
+      "totalPaid": 71
+    },
+    "John": {
+      "drink": "Mocha",
+      "price": 5,
+      "totalPaid": 75.5
+    },
+    "Lauren": {
+      "drink": "Red Bull",
+      "price": 5,
+      "totalPaid": 60.5
+    },
+    "Sam": {
+      "drink": "Orange Juice",
+      "price": 3,
+      "totalPaid": 76.5
+    }
+  },
+  "nextPayer": "Lauren"
+}
