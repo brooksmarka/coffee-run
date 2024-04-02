@@ -15,8 +15,5 @@ COPY . .
 # Build TypeScript files
 RUN npm test && npm run build
 
-# Expose port
-EXPOSE 3000
-
 # Start the application
 ENTRYPOINT ["node", "/usr/src/app/dist/src/index.js"]

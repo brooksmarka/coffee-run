@@ -5,8 +5,6 @@ services:
     tty: true
     environment:
       NODE_ENV: production
-    ports:
-      - 3000:3000
     volumes:
       - coffee-data:/usr/src/app/src/data
 
