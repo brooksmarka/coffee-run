@@ -66,6 +66,8 @@ Follow the on-screen prompts to manage coffee orders and track who should pay ne
 
 ## Assumptions
 - All five coworkers order their favorite beverage everyday without skipping a day.
+- You will not be able to add a coworker to the order while the program is running.  This must be done by stopping the program and editing the seed data in `src/data/coffeeData.json`.
+-
 
 ## Tests
 

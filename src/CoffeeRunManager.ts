@@ -9,7 +9,7 @@ export class CoffeeRunManager {
 
     constructor(dataFile: string) {
         this.dataFilePath = dataFile;
-        this.coffeeData = this.coffeeData = { coworkers: {}, nextPayer: '' };
+        this.coffeeData = { coworkers: {}, nextPayer: '' };
     }
 
     /**
@@ -27,7 +27,7 @@ export class CoffeeRunManager {
             return JSON.parse(rawData);
     
         } catch (error) {
-            console.log(`error fetching coffee data from file ${dataFile}` ,error)
+            console.error(`error fetching coffee data from file ${dataFile}`, error)
     
             return { coworkers: {}, nextPayer: ''}
         }
@@ -42,7 +42,7 @@ export class CoffeeRunManager {
      * 
      * @returns {CoffeeData} The updated coffee data after handling any changes, or the current data if no updates are made.
     */
-    public handleCoffeeDataUpdates(){
+    public handleCoffeeDataUpdates(): CoffeeData{
         let response = '';
         do {
             response = readlineSync.question(chalk.yellow(`\nWould you like to change it? (y/n): `));
@@ -52,7 +52,7 @@ export class CoffeeRunManager {
         } while (response !== 'y' && response !== 'n');
     
         if (response === 'y') {
-            return this.getCoffeeOrders(this.coffeeData);
+            return this.getCoffeeOrders();
         } else {
             // 'n' was chosen
             return this.coffeeData;
@@ -64,45 +64,49 @@ export class CoffeeRunManager {
      * This method prompts the user to update the drink order for a selected coworker. 
      * It displays the current orders, allows the user to specify a coworker's name, and then
      * inputs the new drink and price for that coworker. 
-     * @param data The CoffeeData object containing the current state of coworkers' coffee orders.
      * @returns The updated CoffeeData object after making the requested changes to the orders.
     */
-    public getCoffeeOrders(data: CoffeeData): CoffeeData{
+    public getCoffeeOrders(): CoffeeData{
         let isUpdating = 'y';
     
         while (isUpdating === 'y') {
         
-           this.displayOrders(data);
+           this.displayOrders();
     
             let coworkerName = readlineSync.question(chalk.yellow('Enter the name of the person whose order you want to update: '));
     
-            if (data.coworkers[coworkerName]) {
+            if (this.coffeeData.coworkers[coworkerName]) {
                 let drink = readlineSync.question('Enter the new drink: ');
                 let price = readlineSync.question('Enter the new price: ');
-                data.coworkers[coworkerName].drink = drink;
-                data.coworkers[coworkerName].price = parseFloat(price);
+                this.coffeeData.coworkers[coworkerName].drink = drink;
+                this.coffeeData.coworkers[coworkerName].price = parseFloat(price);
             } else {
-                console.log("No such person in the coffee orders.");
+                console.error(chalk.red("No such person in the coffee orders."));
             }
     
-            isUpdating = readlineSync.question('Would you like to update another order? (y/n): ');
+            isUpdating = readlineSync.question(chalk.yellow('Would you like to update another order? (y/n): '));
         }
         
-        return data;
+        return this.coffeeData;
     }
 
     /**
-     * Calculates the total cost of the current coffee run.
-     * This method iterates over all coworkers' coffee orders in the coffee data
-     * and sums up their individual drink prices to determine the total cost
-     * of the coffee run. It logs the total cost to the console and returns it.
-     * 
-     * Note: This method assumes that the prices in the coffee data are up-to-date
-     * and accurate at the time of calculation.
-     * 
-     * @returns {number} The total cost of the coffee orders for the current run.
-     */
-    public costOfCoffeeRun() : number{
+     * Displays the current coffee order
+     * @returns void 
+    */
+    public displayOrders(): void{
+        console.log(chalk.green.bold.underline(`Hello! ${this.coffeeData.nextPayer} is up to pay! Here are the Current coffee orders:\n`));
+        for (const coworkerKey in this.coffeeData.coworkers) {
+            console.log(chalk.magentaBright(`${coworkerKey}: ${this.coffeeData.coworkers[coworkerKey].drink} at $${this.coffeeData.coworkers[coworkerKey].price}`));
+        }
+    }
+
+    /**
+     * Updates the total paid amount for the coworker who is paying for this coffee run.
+     * @returns void
+    */
+    public coffeeRun (): void{
+
         let totalCost = 0;
     
         for (let coworkerKey in this.coffeeData.coworkers) {
@@ -110,35 +114,12 @@ export class CoffeeRunManager {
             totalCost += price;
         }
         console.log(chalk.magenta(`the total cost for this coffee run was: ${totalCost}\n`))
-        return totalCost;
-    
-    }
-
-    /**
-     * Displays the current coffee order
-     * @param data - The data structure containing coworkers' coffee orders.
-     * @returns void 
-    */
-    public displayOrders(data: CoffeeData): void{
-        console.log(chalk.green.bold.underline(`Hello! ${data.nextPayer} is up to pay! Here are the Current coffee orders:\n`));
-        for (const coworkerKey in data.coworkers) {
-            console.log(chalk.magentaBright(`${coworkerKey}: ${data.coworkers[coworkerKey].drink} at $${data.coworkers[coworkerKey].price}`));
-        }
-    }
-
-    /**
-     * Updates the total paid amount for the coworker who is paying for this coffee run.
-     * @param totalCost - The total cost of the current coffee run.
-     * @param personToPay - The name of the coworker who is paying for this coffee run.
-     * @returns void
-    */
-    public coffeeRun ( totalCost: number, personToPay: string): void{
 
         for(const coworkerKey in this.coffeeData.coworkers){
             
             const totalPaid = this.coffeeData.coworkers[coworkerKey].totalPaid;
 
-            if(coworkerKey === personToPay){
+            if(coworkerKey === this.coffeeData.nextPayer){
                 this.coffeeData.coworkers[coworkerKey].totalPaid = totalPaid + totalCost;
                 console.log(chalk.whiteBright.underline(`Coworker ${coworkerKey} just had to pay ${totalCost}\n`))
             }
@@ -152,7 +133,7 @@ export class CoffeeRunManager {
      * This method goes through each coworker's total paid amount and finds the one 
      * who has paid the least. This coworker is then designated as the next person to pay.
      * If a next payer is found, their name is logged to the console and updated in the coffee data.
-     * If no next payer can be determined (e.g., in an empty dataset), an informative message is logged.
+     * If no next payer can be determined an error message is logged
      * @returns void
     */
     public updateNextPayer(): void {
@@ -172,7 +153,7 @@ export class CoffeeRunManager {
             console.log(chalk.green(`the next person to pay should be: ${nextPayer}\n`))
             this.coffeeData.nextPayer = nextPayer;
         }else{
-            console.log("We could not determine the next payer")
+            console.error("We could not determine the next payer")
         }
     }
 
@@ -202,11 +183,11 @@ export class CoffeeRunManager {
         while(keepRunning){
             //setup for the coffee run
             this.coffeeData = this.fetchCoffeeData(this.dataFilePath);
-            this.displayOrders(this.coffeeData);
+            this.displayOrders();
             this.handleCoffeeDataUpdates();
 
             //We are now ready to perform the coffee run
-            this.coffeeRun(this.costOfCoffeeRun(), this.coffeeData.nextPayer);
+            this.coffeeRun();
             this.updateNextPayer();
             this.writeToFile();
 
