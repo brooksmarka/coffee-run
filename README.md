@@ -84,7 +84,7 @@ This command will execute all the tests and provide a report on their outcomes. 
 
 ## Authors
 
-- **Mark Brooks** - [YourGitHub](https://github.com/brooksmarka)
+- **Mark Brooks** - [GitHub](https://github.com/brooksmarka)
 
 ## License
 

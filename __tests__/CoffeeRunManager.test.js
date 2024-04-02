@@ -74,7 +74,7 @@ describe('coffeeRun', () => {
 
   it('should correctly update the total paid amount for the person paying', () => {
     coffeeRunManager.coffeeRun();
-    expect(coffeeRunManager.coffeeData.coworkers['Alice'].totalPaid).toBe(18); // 10 (original) + 8 (total cost)
+    expect(coffeeRunManager.coffeeData.coworkers['Alice'].totalPaid).toBe(14.5); // 10 (original) + 8 (total cost) - 3.5 (price)
   });
 
   afterEach(() => {
