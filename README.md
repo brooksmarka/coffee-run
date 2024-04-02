@@ -45,12 +45,9 @@ npm run dev
 ```
 
 For installing and running with Docker:
-```bash
-docker compose build
-```
 
 ```bash
-docker compose run -it coffee-run
+docker compose run service
 ```
 
 Follow the on-screen prompts to manage coffee orders and track who should pay next.
